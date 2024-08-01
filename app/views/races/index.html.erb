@@ -1,0 +1,21 @@
+<h1>Races Index</h1>
+
+<h2>Cars</h2>
+<ul>
+  <% @cars.each do |car| %>
+    <li>
+      <% if @tracks.any? %>
+        <%= link_to "#{car.model} - #{car.power} HP", show_race_path(car_id: car.id, track_id: @tracks.first.id) %>
+      <% else %>
+        <%= "#{car.model} - #{car.power} HP" %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+
+<h2>Tracks</h2>
+<ul>
+  <% @tracks.each do |track| %>
+    <li><%= track.name %> - <%= track.length %> km</li>
+  <% end %>
+</ul>
