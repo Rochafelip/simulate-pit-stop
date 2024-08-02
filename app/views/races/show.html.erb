@@ -1,72 +1,18 @@
-<h1>Estratégia de Pitstop</h1>
+<h1>Detalhes da Corrida</h1>
 
-<% if @car && @track %>
-  <h2>Carro: <%= @car.model %></h2>
-  <p>Potência: <%= @car.power %> HP</p>
-  <p>Peso: <%= @car.weight %> kg</p>
-  <p>Capacidade do tanque: <%= @car.fuel_capacity %> L</p>
+<h2>Carro</h2>
+<p><%= @car.model %></p>
 
-  <h2>Pista: <%= @track.name %></h2>
-  <p>Comprimento: <%= @track.length %> km</p>
-  <p>Número de curvas: <%= @track.number_of_curves %></p>
-  <p>Tempo de volta: <%= @track.car_lap_time %> segundos</p>
+<h2>Pista</h2>
+<p><%= @track.name %></p>
 
-  <h2>Calcular Estratégia de Pitstop</h2>
-
-  <%= form_with url: calculate_strategy_race_path(@car, @track), method: :post, local: true do %>
-    <div class="field">
-      <%= label_tag :fuel_consumption_per_lap, "Consumo de combustível por volta (L)" %>
-      <%= number_field_tag :fuel_consumption_per_lap, nil, step: 0.01 %>
-    </div>
-    <div class="actions">
-      <%= submit_tag "Calcular" %>
-    </div>
-  <% end %>
-
-  <% if @pitstop_strategy %>
-    <h2>Estratégia</h2>
-    <p>Voltas por tanque: <%= @pitstop_strategy[:laps_per_tank] %></p>
-    <p>Combustível necessário por volta: <%= @pitstop_strategy[:fuel_needed_per_lap] %> L</p>
-    <p>Distância total da corrida: <%= @pitstop_strategy[:total_race_distance] %> km</p>
-    <p>Total de voltas: <%= @pitstop_strategy[:total_laps] %></p>
-    <p>Paradas necessárias: <%= @pitstop_strategy[:pitstops_needed] %></p>
-  <% end %>
-<% else %>
-  <p>Carro ou pista não foram selecionados corretamente. Por favor, volte e selecione novamente.</p>
-<% end %>
-<h1>Estratégia de Pitstop</h1>
-
-<% if @car && @track %>
-  <h2>Carro: <%= @car.model %></h2>
-  <p>Potência: <%= @car.power %> HP</p>
-  <p>Peso: <%= @car.weight %> kg</p>
-  <p>Capacidade do tanque: <%= @car.fuel_capacity %> L</p>
-
-  <h2>Pista: <%= @track.name %></h2>
-  <p>Comprimento: <%= @track.length %> km</p>
-  <p>Número de curvas: <%= @track.number_of_curves %></p>
-  <p>Tempo de volta: <%= @track.car_lap_time %> segundos</p>
-
-  <h2>Calcular Estratégia de Pitstop</h2>
-
-  <%= form_with url: calculate_strategy_race_path(@car, @track), method: :post, local: true do %>
-    <div class="field">
-      <%= label_tag :fuel_consumption_per_lap, "Consumo de combustível por volta (L)" %>
-      <%= number_field_tag :fuel_consumption_per_lap, nil, step: 0.01 %>
-    </div>
-    <div class="actions">
-      <%= submit_tag "Calcular" %>
-    </div>
-  <% end %>
-
-  <% if @pitstop_strategy %>
-    <h2>Estratégia</h2>
-    <p>Voltas por tanque: <%= @pitstop_strategy[:laps_per_tank] %></p>
-    <p>Combustível necessário por volta: <%= @pitstop_strategy[:fuel_needed_per_lap] %> L</p>
-    <p>Distância total da corrida: <%= @pitstop_strategy[:total_race_distance] %> km</p>
-    <p>Total de voltas: <%= @pitstop_strategy[:total_laps] %></p>
-    <p>Paradas necessárias: <%= @pitstop_strategy[:pitstops_needed] %></p>
-  <% end %>
-<% else %>
-  <p>Carro ou pista não foram selecionados corretamente. Por favor, volte e selecione novamente.</p>
+<% if @pitstop_strategy %>
+  <h2>Estratégia de Pitstop</h2>
+  <ul>
+    <li>Voltas por tanque: <%= @pitstop_strategy[:laps_per_tank] %></li>
+    <li>Consumo de combustível por volta: <%= @pitstop_strategy[:fuel_needed_per_lap] %> litros</li>
+    <li>Distância total da corrida: <%= @pitstop_strategy[:total_race_distance] %> km</li>
+    <li>Total de voltas: <%= @pitstop_strategy[:total_laps] %></li>
+    <li>Paradas necessárias: <%= @pitstop_strategy[:pitstops_needed] %></li>
+  </ul>
 <% end %>

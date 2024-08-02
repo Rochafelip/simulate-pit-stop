@@ -1,7 +1,14 @@
 class RacesController < ApplicationController
-  def new
+  # Desabilita a verificação CSRF para todas as ações deste controlador
+  skip_before_action :verify_authenticity_token, only: [:calculate_strategy]
+
+  def index
     @cars = Car.all
     @tracks = Track.all
+  end
+
+  def new
+    @races = Race.new
   end
 
   def show

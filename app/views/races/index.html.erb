@@ -1,21 +1,16 @@
-<h1>Races Index</h1>
+<h1>Corridas</h1>
+<%= link_to 'Nova Corrida', new_race_path %>
 
-<h2>Cars</h2>
+<h2>Carros</h2>
 <ul>
   <% @cars.each do |car| %>
-    <li>
-      <% if @tracks.any? %>
-        <%= link_to "#{car.model} - #{car.power} HP", show_race_path(car_id: car.id, track_id: @tracks.first.id) %>
-      <% else %>
-        <%= "#{car.model} - #{car.power} HP" %>
-      <% end %>
-    </li>
+    <li><%= car.model %></li>
   <% end %>
 </ul>
 
-<h2>Tracks</h2>
+<h2>Pistas</h2>
 <ul>
   <% @tracks.each do |track| %>
-    <li><%= track.name %> - <%= track.length %> km</li>
+    <li><%= track.name %></li>
   <% end %>
 </ul>
