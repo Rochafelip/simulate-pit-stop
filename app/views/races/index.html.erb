@@ -4,13 +4,23 @@
 <h2>Carros</h2>
 <ul>
   <% @cars.each do |car| %>
-    <li><%= car.model %></li>
+    <h3><%= car.model %></h3>
+    <p>Potência: <%= car.power %> HP</p>
+    <p>Peso: <%= car.weight %> kg</p>
+    <p>Capacidade do tanque: <%= car.fuel_capacity %> L</p>
+    <p>Consumo de combustível por volta: <%= car.fuel_consumption_per_lap %> L</p>
+  </div>
   <% end %>
 </ul>
 
 <h2>Pistas</h2>
 <ul>
   <% @tracks.each do |track| %>
-    <li><%= track.name %></li>
+    <div>
+    <h3><%= track.name %></h3>
+    <p>Comprimento: <%= track.distance %> km</p>
+    <p>Número de curvas: <%= track.number_of_curves %></p>
+    <p>Tempo de volta: <%= track.car_lap_time %> segundos</p>
+  </div>
   <% end %>
 </ul>

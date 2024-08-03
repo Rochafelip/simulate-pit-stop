@@ -1,3 +1,6 @@
 class Track < ApplicationRecord
-  validates :name, :length, :number_of_curves, :car_lap_time, presence: true
+  validates :name, presence: true
+  validates :length, presence: true
+  validates :number_of_curves, presence: true
+  validates :car_lap_time, presence: true
 end

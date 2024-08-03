@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_01_172337) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_03_005606) do
   create_table "cars", force: :cascade do |t|
     t.string "model"
     t.integer "power"
@@ -23,7 +23,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_01_172337) do
 
   create_table "tracks", force: :cascade do |t|
     t.string "name"
-    t.integer "length"
+    t.integer "distance"
     t.integer "number_of_curves"
     t.float "car_lap_time"
     t.datetime "created_at", null: false
