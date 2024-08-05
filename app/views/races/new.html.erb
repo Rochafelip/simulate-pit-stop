@@ -3,11 +3,19 @@
 <%= form_with url: show_race_path(car_id: '', track_id: ''), method: :get, local: true do %>
   <div class="field">
     <%= label_tag :car_id, "Selecione o Carro" %>
-    <%= select_tag :car_id, options_from_collection_for_select(@cars, :id, :model), onchange: "updateFormAction()" %>
+    <%= select_tag :car_id, options_from_collection_for_select(@cars, :id, :model) %>
   </div>
   <div class="field">
     <%= label_tag :track_id, "Selecione a Pista" %>
-    <%= select_tag :track_id, options_from_collection_for_select(@tracks, :id, :name), onchange: "updateFormAction()" %>
+    <%= select_tag :track_id, options_from_collection_for_select(@tracks, :id, :name) %>
+  </div>
+  <div class="field">
+    <%= label_tag :fuel_consumption_per_lap, "Consumo de Combustível por Volta (litros)" %>
+    <%= text_field_tag :fuel_consumption_per_lap %>
+  </div>
+  <div class="field">
+    <%= label_tag :total_laps, "Quantidade de Voltas da Corrida" %>
+    <%= text_field_tag :total_laps %>
   </div>
   <div class="actions">
     <%= submit_tag "Calcular Estratégia" %>

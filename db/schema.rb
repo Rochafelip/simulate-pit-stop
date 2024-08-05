@@ -10,22 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_03_005606) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_05_185414) do
   create_table "cars", force: :cascade do |t|
     t.string "model"
     t.integer "power"
     t.integer "weight"
     t.float "fuel_capacity"
-    t.float "fuel_consumption_per_lap"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "tracks", force: :cascade do |t|
     t.string "name"
-    t.integer "distance"
+    t.float "distance"
     t.integer "number_of_curves"
-    t.float "car_lap_time"
+    t.string "country"
+    t.float "elevation_track"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

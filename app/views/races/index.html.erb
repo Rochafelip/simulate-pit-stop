@@ -1,5 +1,5 @@
 <h1>Corridas</h1>
-<%= link_to 'Nova Corrida', new_race_path %>
+<%= link_to 'Nova Consulta', new_race_path %>
 
 <h2>Carros</h2>
 <ul>
@@ -8,7 +8,7 @@
     <p>Potência: <%= car.power %> HP</p>
     <p>Peso: <%= car.weight %> kg</p>
     <p>Capacidade do tanque: <%= car.fuel_capacity %> L</p>
-    <p>Consumo de combustível por volta: <%= car.fuel_consumption_per_lap %> L</p>
+    
   </div>
   <% end %>
 </ul>
@@ -20,7 +20,9 @@
     <h3><%= track.name %></h3>
     <p>Comprimento: <%= track.distance %> km</p>
     <p>Número de curvas: <%= track.number_of_curves %></p>
-    <p>Tempo de volta: <%= track.car_lap_time %> segundos</p>
+    <p>País: <%=track.country %></p>
+    <p>Elevação da pista: <%=track.elevation_track %> m </p>
+    
   </div>
   <% end %>
 </ul>

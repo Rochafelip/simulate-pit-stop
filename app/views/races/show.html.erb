@@ -4,15 +4,14 @@
 <p>Potência: <%= @car.power %> HP</p>
 <p>Peso: <%= @car.weight %> kg</p>
 <p>Capacidade do tanque: <%= @car.fuel_capacity %> L</p>
-<p>Consumo de combustível por volta: <%= @car.fuel_consumption_per_lap %> L</p>
+<p>Consumo de combustível por volta: <%= @fuel_consumption_per_lap %> litros</h3>
 
 <h2>Pista: <%= @track.name %></h2>
 <p>Comprimento: <%= @track.distance %> km</p>
 <p>Número de curvas: <%= @track.number_of_curves %></p>
-<p>Tempo de volta: <%= @track.car_lap_time %> segundos</p>
-<p>Laps per Tank: <%= @strategy[:laps_per_tank] %></p>
-<p>Total Race Distance: <%= @strategy[:total_race_distance] %></p>
-<p>Total Laps: <%= @strategy[:total_laps] %></p>
+<p>Voltas por tanque: <%= @strategy[:laps_per_tank].ceil %></p>
+<p>Distância total da corrida: <%= @strategy[:total_race_distance] %> km</p>
+<p>Quantidade de voltas da corrida: <%= @total_laps %></p>
 
 <div class="actions">
   <%= link_to 'Voltar', new_race_path, class: 'button' %>
