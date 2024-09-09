@@ -51,8 +51,8 @@ Atributos:
 3. Configure o banco de dados:
 
     ```bash
-    rails db:create
     rails db:migrate
+    rails db:create
     rails db:seed
     ```
 
