@@ -1,16 +1,22 @@
 class TracksController < ApplicationController
   before_action :set_track, only: [:show, :edit, :update, :destroy]
 
+  # GET /tracks
   def index
-    @tracks = Track.all    
+    @tracks = Track.all
+    render json: @traks    
   end
 
-  def show; end
-
+  # GET /tracks/1
+  def show
+    render json: @tracks
+  end
+  
   def new
     @track = Track.new
   end
 
+  #POST /track
   def create
     @track = Track.new(track_params)
     if @track.save
@@ -20,8 +26,7 @@ class TracksController < ApplicationController
     end
   end
 
-  def edit; end
-
+  # PATCH/PUT /tracks/1
   def update
     if @track.update(track_params)
       redirect_to @track, notice: 'Pista atualizada com sucesso.'
@@ -30,6 +35,7 @@ class TracksController < ApplicationController
     end
   end
 
+  # DELETE /tracks/1
   def destroy
     @track.destroy
     redirect_to tracks_path, notice: 'Pista removida com sucesso.'
