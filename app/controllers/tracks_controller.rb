@@ -1,15 +1,16 @@
 class TracksController < ApplicationController
-  before_action :set_track, only: [:show, :edit, :update, :destroy]
+  before_action :set_track, only: [:show, :update, :destroy]
 
   # GET /tracks
   def index
     @tracks = Track.all
+    
     render json: @traks    
   end
 
   # GET /tracks/1
   def show
-    render json: @tracks
+    render json: @track
   end
   
   def new
