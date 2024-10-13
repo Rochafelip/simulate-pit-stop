@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_05_185414) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_09_181032) do
   create_table "cars", force: :cascade do |t|
     t.string "model"
     t.integer "power"
@@ -18,6 +18,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_05_185414) do
     t.float "fuel_capacity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "category"
+  end
+
+  create_table "races", force: :cascade do |t|
+    t.integer "track_id", null: false
+    t.integer "car_id", null: false
+    t.float "average_lap_time"
+    t.float "fuel_consumption_per_lap"
+    t.integer "total_laps"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["car_id"], name: "index_races_on_car_id"
+    t.index ["track_id"], name: "index_races_on_track_id"
   end
 
   create_table "tracks", force: :cascade do |t|
@@ -30,4 +43,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_05_185414) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "races", "cars"
+  add_foreign_key "races", "tracks"
 end

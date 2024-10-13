@@ -1,0 +1,78 @@
+<h1>Adicionar Carro</h1>
+
+<%= form_with(model: @car, local: true) do |form| %>
+  <div class="field">
+    <%= form.label :model %>
+    <%= form.text_field :model %>
+  </div>
+
+  <div class="field">
+    <%= form.label :power %>
+    <%= form.number_field :power %>
+  </div>
+
+  <div class="field">
+    <%= form.label :weight %>
+    <%= form.number_field :weight %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fuel_capacity %>
+    <%= form.number_field :fuel_capacity %>
+  </div>
+
+  <div class="field">
+    <%= form.label :category %>
+    <%= form.text_field :category %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Adicionar Carro" %>
+  </div>
+<% end %>
+
+<h1>Adicionar Pista</h1>
+
+<%= form_with(model: @track, local: true) do |form| %>
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :distance %>
+    <%= form.number_field :distance %>
+  </div>
+
+  <div class="field">
+    <%= form.label :number_of_curves %>
+    <%= form.number_field :number_of_curves %>
+  </div>
+
+  <div class="field">
+    <%= form.label :country %>
+    <%= form.text_field :country %>
+  </div>
+
+  <div class="field">
+    <%= form.label :elevation_track %>
+    <%= form.number_field :elevation_track %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Adicionar Pista" %>
+  </div>
+<% end %>
+
+<div class="actions">
+  <%= link_to 'Voltar', races_path, class: 'button' %>
+</div>
+
+<script>
+  function updateFormAction() {
+    const carId = document.querySelector('#car_id').value;
+    const trackId = document.querySelector('#track_id').value;
+    const form = document.querySelector('form');
+    form.action = `/races/show/${carId}/${trackId}`;
+  }
+</script>
