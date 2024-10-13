@@ -1,6 +1,6 @@
 <h1>Selecionar Carro e Pista</h1>
 
-<%= form_with url: show_race_path(car_id: '', track_id: ''), method: :get, local: true do %>
+<%= form_with url: '', method: :get, local: true, html: { onsubmit: 'updateFormAction()' } do %>
   <div class="field">
     <%= label_tag :car_id, "Selecione o Carro" %>
     <%= select_tag :car_id, options_from_collection_for_select(@cars, :id, :model) %>
@@ -31,6 +31,8 @@
     const carId = document.querySelector('#car_id').value;
     const trackId = document.querySelector('#track_id').value;
     const form = document.querySelector('form');
-    form.action = `/races/show/${carId}/${trackId}`;
+    if (carId && trackId) {
+      form.action = `<%= show_race_path(car_id: '', track_id: '') %>`.replace('{car_id}', carId).replace('{track_id}', trackId);
+    }
   }
 </script>

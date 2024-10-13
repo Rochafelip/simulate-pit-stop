@@ -1,12 +1,11 @@
 class TracksController < ApplicationController
+  before_action :set_track, only: [:show, :edit, :update, :destroy]
+
   def index
-    @tracks = Track.all
-    render json: @tracks
+    @tracks = Track.all    
   end
 
-  def show
-    @track = Track.find(params[:id])
-  end
+  def show; end
 
   def new
     @track = Track.new
@@ -15,34 +14,34 @@ class TracksController < ApplicationController
   def create
     @track = Track.new(track_params)
     if @track.save
-      redirect_to @track
+      redirect_to tracks_path, notice: 'Pista adicionada com sucesso.'
     else
       render :new
     end
   end
 
-  def edit
-    @track = Track.find(params[:id])
-  end
+  def edit; end
 
   def update
-    @track = Track.find(params[:id])
     if @track.update(track_params)
-      redirect_to @track
+      redirect_to @track, notice: 'Pista atualizada com sucesso.'
     else
       render :edit
     end
   end
 
   def destroy
-    @track = Track.find(params[:id])
     @track.destroy
-    redirect_to tracks_path
+    redirect_to tracks_path, notice: 'Pista removida com sucesso.'
   end
 
   private
 
+  def set_track
+    @track = Track.find(params[:id])
+  end
+
   def track_params
-    params.require(:track).permit(:name, :length, :number_of_curves, :car_lap_time)
+    params.require(:track).permit(:name, :distance, :number_of_curves, :country, :elevation_track)
   end
 end

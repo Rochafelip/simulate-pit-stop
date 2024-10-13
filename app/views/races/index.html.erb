@@ -1,28 +1,31 @@
 <h1>Corridas</h1>
-<%= link_to 'Nova Consulta', new_race_path %>
+
+<%= link_to 'Calcular Estratégia de Pitstop', new_race_path, class: 'btn btn-primary' %>
 
 <h2>Carros</h2>
 <ul>
   <% @cars.each do |car| %>
-    <h3><%= car.model %></h3>
-    <p>Potência: <%= car.power %> HP</p>
-    <p>Peso: <%= car.weight %> kg</p>
-    <p>Capacidade do tanque: <%= car.fuel_capacity %> L</p>
-    
-  </div>
+    <li>
+      <h3><%= link_to car.model, car_path(car) %></h3>
+      <p>Potência: <%= car.power %> HP</p>
+      <p>Peso: <%= car.weight %> kg</p>
+      <p>Capacidade do tanque: <%= car.fuel_capacity %> L</p>
+      <p>Categoria: <%= car.category %></p>
+    </li>
   <% end %>
 </ul>
 
 <h2>Pistas</h2>
 <ul>
   <% @tracks.each do |track| %>
-    <div>
-    <h3><%= track.name %></h3>
-    <p>Comprimento: <%= track.distance %> km</p>
-    <p>Número de curvas: <%= track.number_of_curves %></p>
-    <p>País: <%=track.country %></p>
-    <p>Elevação da pista: <%=track.elevation_track %> m </p>
-    
-  </div>
+    <li>
+      <h3><%= link_to track.name, track_path(track) %></h3>
+      <p>Comprimento: <%= track.distance %> km</p>
+      <p>Número de curvas: <%= track.number_of_curves %></p>
+      <p>País: <%= track.country %></p>
+      <p>Elevação da pista: <%= track.elevation_track %> m</p>
+    </li>
   <% end %>
 </ul>
+
+<%= link_to 'Voltar', races_path, class: 'btn btn-secondary' %>

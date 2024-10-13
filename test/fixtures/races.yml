@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  track: one
+  car: one
+  average_lap_time: 1.5
+  fuel_consumption_per_lap: 1.5
+  total_laps: 1
+
+two:
+  track: two
+  car: two
+  average_lap_time: 1.5
+  fuel_consumption_per_lap: 1.5
+  total_laps: 1
