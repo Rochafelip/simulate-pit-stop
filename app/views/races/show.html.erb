@@ -9,9 +9,11 @@
 <h2>Pista: <%= @track.name %></h2>
 <p>Comprimento: <%= @track.distance %> km</p>
 <p>Número de curvas: <%= @track.number_of_curves %></p>
-<p>Voltas por tanque: <%= @strategy[:laps_per_tank].ceil %></p>
 <p>Distância total da corrida: <%= @strategy[:total_race_distance] %> km</p>
-<p>Quantidade de voltas da corrida: <%= @total_laps %></p>
+<p>Quantidade de voltas da corrida: <%= @total_laps %> voltas</p>
+
+<h2>Recomendação</h2>
+<p>Voltas p/ tanque: <%= @strategy[:laps_per_tank].ceil %> litros</p>
 
 <div class="actions">
   <%= link_to 'Voltar', new_race_path, class: 'button' %>
