@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :races, only: [:index, :new, :show] do
+  resources :cars, except: [:edit, :update]  # Inclui todas as ações, exceto edit e update
+  resources :tracks, except: [:edit, :update]  # Inclui todas as ações, exceto edit e update
+  resources :races, except: [:edit, :update] do
     member do
       post 'calculate_strategy'
     end
@@ -9,10 +11,7 @@ Rails.application.routes.draw do
       post 'create_cars_tracks'
     end
   end
-
-  resources :cars, except: [:edit, :update]  # Inclui todas as ações, exceto edit e update
-  resources :tracks, except: [:edit, :update]  # Inclui todas as ações, exceto edit e update
-
+  
   get 'races/show/:car_id/:track_id', to: 'races#show', as: 'show_race'
 
   root 'races#index'
