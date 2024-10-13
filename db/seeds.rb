@@ -1,3 +1,4 @@
+rails db:drop
 Car.create([
   {model: "Porsche 911 GT3 R", power: 520, weight: 1220, fuel_capacity: 120, category: "GT3"},
   {model: "Ferrari 488 GT3 Evo 2020", power: 620, weight: 1220, fuel_capacity: 110, category: "GT3"},
