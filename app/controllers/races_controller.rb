@@ -8,7 +8,7 @@ class RacesController < ApplicationController
   def create
     @race = Race.new(race_params)
 
-    @race.total_fuel_needed = @race.fuel_consumption_per_lap * @race.total_laps  
+    @race.total_fuel_needed = @race.fuel_consumption_per_lap * @race.total_laps
     if @race.save
       # Calcular a estratégia de pitstop aqui, se necessário
       redirect_to race_path(@race) # Passa o objeto @race com o id automaticamente
@@ -16,7 +16,7 @@ class RacesController < ApplicationController
       load_resources
       render :new
     end
-  end  
+  end
 
   def new
     @car = Car.new
@@ -37,7 +37,7 @@ class RacesController < ApplicationController
       fuel_consumption_per_lap: params[:fuel_consumption_per_lap],
       total_laps: params[:total_laps],
       average_lap_time: params[:average_lap_time] # Adicionando aqui
-    ) 
+    )
     # Calcule o total de combustível necessário
     @race.total_fuel_needed = @race.fuel_consumption_per_lap * @race.total_laps
 
@@ -66,7 +66,8 @@ class RacesController < ApplicationController
     @average_lap_time = params[:average_lap_time].to_f
 
     if @fuel_consumption_per_lap <= 0 || @total_laps <= 0 || @average_lap_time <= 0
-      render json: { error: "Consumo de combustível, total de voltas e tempo médio devem ser maiores que zero." }, status: :unprocessable_entity
+      render json: { error: "Consumo de combustível, total de voltas e tempo médio devem ser maiores que zero." },
+             status: :unprocessable_entity
     end
   end
 
@@ -79,13 +80,13 @@ class RacesController < ApplicationController
       fuel_consumption_per_lap: @fuel_consumption_per_lap,
       total_laps: @total_laps
     )
-    
+
     strategy_service.calculate
   end
-  
+
   # Carrega todos os carros e pistas
   def load_resources
     @cars = Car.all
     @tracks = Track.all
-  end  
+  end
 end

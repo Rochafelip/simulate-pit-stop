@@ -4,20 +4,20 @@ class TracksController < ApplicationController
   # GET /tracks
   def index
     @tracks = Track.all
-    
-    render json: @traks    
+
+    render json: @traks
   end
 
   # GET /tracks/1
   def show
     render json: @track
   end
-  
+
   def new
     @track = Track.new
   end
 
-  #POST /track
+  # POST /track
   def create
     @track = Track.new(track_params)
     if @track.save

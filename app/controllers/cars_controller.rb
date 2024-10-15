@@ -4,13 +4,13 @@ class CarsController < ApplicationController
   # GET /cars
   def index
     @cars = Car.all
-    
+
     render json: @cars
   end
 
   # GET /cars/1
   def show
-  render json: @car
+    render json: @car
   end
 
   # POST /cars
@@ -24,7 +24,7 @@ class CarsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /cars/1  
+  # PATCH/PUT /cars/1
   def update
     if @car.update(car_params)
       redirect_to @car, notice: 'Carro atualizado com sucesso.'

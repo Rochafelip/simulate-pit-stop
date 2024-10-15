@@ -5,7 +5,7 @@ class CreateCars < ActiveRecord::Migration[7.1]
       t.integer :power
       t.integer :weight
       t.float :fuel_capacity
-    
+
       t.timestamps
     end
   end
