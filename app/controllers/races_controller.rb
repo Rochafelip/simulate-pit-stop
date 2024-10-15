@@ -6,6 +6,18 @@ class RacesController < ApplicationController
     load_resources
   end
 
+  def create
+    puts params.inspect
+    @race = Race.new(race_params)
+  
+    if @race.save
+      redirect_to race_path(@race) # Passa o objeto @race com o id automaticamente
+    else
+      render :new
+    end
+  end
+  
+
   def new
     @car = Car.new
     @track = Track.new
@@ -23,12 +35,35 @@ class RacesController < ApplicationController
 
    def calculate_strategy
     @strategy = calculate_pitstop_strategy
+
+    # Cria e salva a corrida com as informações fornecidas no formulário
+  @race = Race.create(
+    car_id: params[:car_id],
+    track_id: params[:track_id],
+    fuel_consumption_per_lap: params[:fuel_consumption_per_lap],
+    total_laps: params[:total_laps]
+  )
+    if @race.persisted?
+    # Opcional: Salva a estratégia de pitstop junto com a corrida
+    PitstopStrategy.create(
+      race: @race,
+      strategy_data: @strategy # Assumindo que strategy é um hash ou similar
+    )
+    render json: { success: "Corrida e estratégia salvas com sucesso!", strategy: @strategy }
+    else
+    render json: { error: "Erro ao salvar a corrida." }, status: :unprocessable_entity
+    end
     render json: @strategy
   end
 
   private
 
+  def race_params
+    params.permit(:car_id, :track_id, :fuel_consumption_per_lap, :total_laps)
+  end
+
   def set_car_and_track
+    puts "Car ID: #{params[:car_id]}, Track ID: #{params[:track_id]}"
     @car = Car.find(params[:car_id])
     @track = Track.find(params[:track_id])
   rescue ActiveRecord::RecordNotFound
