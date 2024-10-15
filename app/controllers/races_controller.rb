@@ -1,5 +1,4 @@
 class RacesController < ApplicationController
-  before_action :set_car_and_track, only: [:show, :calculate_strategy]
   before_action :set_race_params, only: [:show, :calculate_strategy]
 
   def index
@@ -15,8 +14,7 @@ class RacesController < ApplicationController
     else
       render :new
     end
-  end
-  
+  end  
 
   def new
     @car = Car.new
@@ -60,14 +58,6 @@ class RacesController < ApplicationController
 
   def race_params
     params.permit(:car_id, :track_id, :fuel_consumption_per_lap, :total_laps)
-  end
-
-  def set_car_and_track
-    puts "Car ID: #{params[:car_id]}, Track ID: #{params[:track_id]}"
-    @car = Car.find(params[:car_id])
-    @track = Track.find(params[:track_id])
-  rescue ActiveRecord::RecordNotFound
-    render json: { error: "Carro ou pista não encontrado." }, status: :not_found
   end
 
   # Carrega os parâmetros da corrida
