@@ -1,24 +1,28 @@
 <h1>Selecionar Carro e Pista</h1>
 
-<%= form_with url: '', method: :get, local: true, html: { onsubmit: 'updateFormAction()' } do %>
+<%= form_with url: races_path, method: :post, local: true do |f| %>
   <div class="field">
-    <%= label_tag :car_id, "Selecione o Carro" %>
-    <%= select_tag :car_id, options_from_collection_for_select(@cars, :id, :model) %>
+    <%= f.label :car_id, "Selecione o Carro" %>
+    <%= f.collection_select :car_id, @cars, :id, :model %>
   </div>
   <div class="field">
-    <%= label_tag :track_id, "Selecione a Pista" %>
-    <%= select_tag :track_id, options_from_collection_for_select(@tracks, :id, :name) %>
+    <%= f.label :track_id, "Selecione a Pista" %>
+    <%= f.collection_select :track_id, @tracks, :id, :name %>
   </div>
   <div class="field">
-    <%= label_tag :fuel_consumption_per_lap, "Consumo de Combustível por Volta (litros)" %>
-    <%= text_field_tag :fuel_consumption_per_lap %>
+    <%= f.label :fuel_consumption_per_lap, "Consumo de Combustível por Volta (litros)" %>
+    <%= f.text_field :fuel_consumption_per_lap, required: true %>
   </div>
   <div class="field">
-    <%= label_tag :total_laps, "Quantidade de Voltas da Corrida" %>
-    <%= text_field_tag :total_laps %>
+    <%= f.label :total_laps, "Quantidade de Voltas da Corrida" %>
+    <%= f.number_field :total_laps, required: true %>
+  </div>
+  <div class="field">
+    <%= f.label :average_lap_time, "Tempo Médio por Volta (segundos)" %>
+    <%= f.number_field :average_lap_time, required: true, step: 'any' %>
   </div>
   <div class="actions">
-    <%= submit_tag "Calcular Estratégia" %>
+    <%= f.submit "Calcular Estratégia" %>
   </div>
 <% end %>
 

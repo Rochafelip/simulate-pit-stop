@@ -1,0 +1,32 @@
+<h1>Lista de Corridas</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID da Corrida</th>
+      <th>Carro</th>
+      <th>Pista</th>
+      <th>Consumo de Combustível por Volta</th>
+      <th>Total de Voltas</th>
+      <th>Tempo Médio por Volta</th>
+      <th>Tanque Necessário</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @races.each do |race| %>
+      <tr>
+        <td><%= race.id %></td>
+        <td><%= race.car.model %></td>
+        <td><%= race.track.name %></td>
+        <td><%= race.fuel_consumption_per_lap %></td>
+        <td><%= race.total_laps %></td>
+        <td><%= race.average_lap_time %></td>
+        <td><%= race.total_fuel_needed %></td>
+        <td><%= link_to 'Ver Detalhes', race_path(race) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'Voltar', races_path, class: 'btn btn-secondary' %>
