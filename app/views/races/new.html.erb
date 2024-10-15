@@ -11,16 +11,24 @@
   </div>
   <div class="field">
     <%= f.label :fuel_consumption_per_lap, "Consumo de Combustível por Volta (litros)" %>
-    <%= f.text_field :fuel_consumption_per_lap %>
+    <%= f.text_field :fuel_consumption_per_lap, required: true %>
   </div>
   <div class="field">
     <%= f.label :total_laps, "Quantidade de Voltas da Corrida" %>
-    <%= f.text_field :total_laps %>
+    <%= f.number_field :total_laps, required: true %>
+  </div>
+  <div class="field">
+    <%= f.label :average_lap_time, "Tempo Médio por Volta (segundos)" %>
+    <%= f.number_field :average_lap_time, required: true, step: 'any' %>
   </div>
   <div class="actions">
     <%= f.submit "Calcular Estratégia" %>
   </div>
 <% end %>
+
+<div class="actions">
+  <%= link_to 'Voltar', races_path, class: 'button' %>
+</div>
 
 <script>
   function updateFormAction() {

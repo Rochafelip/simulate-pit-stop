@@ -1,17 +1,19 @@
 class RacesController < ApplicationController
-  before_action :set_race_params, only: [:show, :calculate_strategy]
+  before_action :set_race_params, only: [:create, :show, :calculate_strategy]
 
   def index
     load_resources
   end
 
   def create
-    puts params.inspect
     @race = Race.new(race_params)
-  
+
+    @race.total_fuel_needed = @race.fuel_consumption_per_lap * @race.total_laps  
     if @race.save
+      # Calcular a estratégia de pitstop aqui, se necessário
       redirect_to race_path(@race) # Passa o objeto @race com o id automaticamente
     else
+      load_resources
       render :new
     end
   end  
@@ -26,47 +28,45 @@ class RacesController < ApplicationController
     @strategy = calculate_pitstop_strategy
   end
 
-  def add_cars_tracks
-    @car = Car.new
-    @track = Track.new
+  def calculate_strategy
+    @strategy = calculate_pitstop_strategy
+    # Criação de uma corrida e salvamento (opcional, dependendo do fluxo)
+    @race = Race.create(
+      car_id: params[:car_id],
+      track_id: params[:track_id],
+      fuel_consumption_per_lap: params[:fuel_consumption_per_lap],
+      total_laps: params[:total_laps],
+      average_lap_time: params[:average_lap_time] # Adicionando aqui
+    ) 
+    # Calcule o total de combustível necessário
+    @race.total_fuel_needed = @race.fuel_consumption_per_lap * @race.total_laps
+
+    if @race.save
+      redirect_to race_path(@race)
+    else
+      load_resources
+      render :new
+    end
   end
 
-   def calculate_strategy
-    @strategy = calculate_pitstop_strategy
-
-    # Cria e salva a corrida com as informações fornecidas no formulário
-  @race = Race.create(
-    car_id: params[:car_id],
-    track_id: params[:track_id],
-    fuel_consumption_per_lap: params[:fuel_consumption_per_lap],
-    total_laps: params[:total_laps]
-  )
-    if @race.persisted?
-    # Opcional: Salva a estratégia de pitstop junto com a corrida
-    PitstopStrategy.create(
-      race: @race,
-      strategy_data: @strategy # Assumindo que strategy é um hash ou similar
-    )
-    render json: { success: "Corrida e estratégia salvas com sucesso!", strategy: @strategy }
-    else
-    render json: { error: "Erro ao salvar a corrida." }, status: :unprocessable_entity
-    end
-    render json: @strategy
+  def strategies
+    @races = Race.includes(:car, :track).all
   end
 
   private
 
   def race_params
-    params.permit(:car_id, :track_id, :fuel_consumption_per_lap, :total_laps)
+    params.permit(:car_id, :track_id, :fuel_consumption_per_lap, :total_laps, :average_lap_time)
   end
 
   # Carrega os parâmetros da corrida
   def set_race_params
     @fuel_consumption_per_lap = params[:fuel_consumption_per_lap].to_f
     @total_laps = params[:total_laps].to_i
+    @average_lap_time = params[:average_lap_time].to_f
 
-    if @fuel_consumption_per_lap <= 0 || @total_laps <= 0
-      render json: { error: "Consumo de combustível e total de voltas devem ser maiores que zero." }, status: :unprocessable_entity
+    if @fuel_consumption_per_lap <= 0 || @total_laps <= 0 || @average_lap_time <= 0
+      render json: { error: "Consumo de combustível, total de voltas e tempo médio devem ser maiores que zero." }, status: :unprocessable_entity
     end
   end
 
@@ -75,13 +75,14 @@ class RacesController < ApplicationController
     strategy_service = PitstopStrategyService.new(
       car: @car,
       track: @track,
-      average_lap_time: params[:average_lap_time].to_f,
+      average_lap_time: @average_lap_time, # Usando o parâmetro do método set_race_params
       fuel_consumption_per_lap: @fuel_consumption_per_lap,
       total_laps: @total_laps
     )
-
+    
     strategy_service.calculate
   end
+  
   # Carrega todos os carros e pistas
   def load_resources
     @cars = Car.all
