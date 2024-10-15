@@ -1,6 +1,6 @@
-<h1>Nova Corrida</h1>
+<h1>Calcular e Salvar Estratégia de Pitstop</h1>
 
-<%= form_with model: @race, local: true do |form| %>
+<%= form_with model: @race, url: pitstop_strategies_path, method: :post, local: true do |form| %>
   <div>
     <%= form.label :car_id, "Selecione o Carro" %>
     <%= form.collection_select :car_id, @cars, :id, :model, prompt: "Selecione um carro" %>
@@ -26,7 +26,7 @@
     <%= form.number_field :total_laps %>
   </div>
 
-  <%= form.submit "Salvar Corrida", class: "btn btn-primary" %>
+  <%= form.submit "Calcular Estratégia", class: "btn btn-primary" %>
 <% end %>
 
 <%= link_to 'Voltar', races_path, class: 'btn btn-secondary' %>

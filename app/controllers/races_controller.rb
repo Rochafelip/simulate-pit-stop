@@ -1,29 +1,38 @@
 class RacesController < ApplicationController
-  before_action :set_car_and_track, only: [:show, :calculate_strategy]
-  before_action :set_race_params, only: [:show, :calculate_strategy]
+  before_action :set_car_and_track, only: [:show]
+  before_action :set_race_params, only: [:show, :create]
 
   def index
     load_resources
+    render :overview  # Exibe a visão de listagem de corridas, carros e pistas
   end
 
   def new
-    @car = Car.new
-    @track = Track.new
+    @race = Race.new
     load_resources
+    render :new  # Exibe o formulário de nova corrida
   end
 
   def show
-    @strategy = calculate_pitstop_strategy
+    @strategy = PitstopStrategyService.new(
+      car: @car,
+      track: @track,
+      average_lap_time: @average_lap_time,
+      fuel_consumption_per_lap: @fuel_consumption_per_lap,
+      total_laps: @total_laps
+    ).calculate
+    render :show  # Exibe os detalhes da corrida e a estratégia calculada
   end
 
-  def add_cars_tracks
-    @car = Car.new
-    @track = Track.new
-  end
+  def create
+    @race = Race.new(race_params)
 
-   def calculate_strategy
-    @strategy = calculate_pitstop_strategy
-    render json: @strategy
+    if @race.save
+      redirect_to show_race_path(@race), notice: 'Corrida criada com sucesso.'
+    else
+      load_resources
+      render :new, alert: 'Erro ao salvar corrida.'
+    end
   end
 
   private
@@ -35,31 +44,22 @@ class RacesController < ApplicationController
     render json: { error: "Carro ou pista não encontrado." }, status: :not_found
   end
 
-  # Carrega os parâmetros da corrida
   def set_race_params
+    @average_lap_time = params[:average_lap_time].to_f
     @fuel_consumption_per_lap = params[:fuel_consumption_per_lap].to_f
     @total_laps = params[:total_laps].to_i
 
-    if @fuel_consumption_per_lap <= 0 || @total_laps <= 0
-      render json: { error: "Consumo de combustível e total de voltas devem ser maiores que zero." }, status: :unprocessable_entity
+    if @average_lap_time <= 0 || @fuel_consumption_per_lap <= 0 || @total_laps <= 0
+      render json: { error: "Todos os parâmetros devem ser maiores que zero." }, status: :unprocessable_entity
     end
   end
 
-  # Usa o Service Object para calcular a estratégia
-  def calculate_pitstop_strategy
-    strategy_service = PitstopStrategyService.new(
-      car: @car,
-      track: @track,
-      average_lap_time: params[:average_lap_time].to_f,
-      fuel_consumption_per_lap: @fuel_consumption_per_lap,
-      total_laps: @total_laps
-    )
-
-    strategy_service.calculate
+  def race_params
+    params.require(:race).permit(:car_id, :track_id, :average_lap_time, :fuel_consumption_per_lap, :total_laps)
   end
-  # Carrega todos os carros e pistas
+
   def load_resources
     @cars = Car.all
     @tracks = Track.all
-  end  
+  end
 end

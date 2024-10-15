@@ -1,20 +1,10 @@
-<h1>Estratégia de Pitstop</h1>
+<h1>Detalhes da Corrida</h1>
 
-<h2>Carro: <%= @car.model %></h2>
-<p>Potência: <%= @car.power %> HP</p>
-<p>Peso: <%= @car.weight %> kg</p>
-<p>Capacidade do tanque: <%= @car.fuel_capacity %> L</p>
-<p>Consumo de combustível por volta: <%= @fuel_consumption_per_lap %> litros</p>
+<p><strong>Carro:</strong> <%= @race.car.model %></p>
+<p><strong>Pista:</strong> <%= @race.track.name %></p>
+<p><strong>Tempo Médio por Volta:</strong> <%= @race.average_lap_time %> segundos</p>
+<p><strong>Consumo de Combustível por Volta:</strong> <%= @race.fuel_consumption_per_lap %> litros</p>
+<p><strong>Total de Voltas:</strong> <%= @race.total_laps %></p>
+<p><strong>Total de Combustível Necessário:</strong> <%= @race.total_fuel_needed %> litros</p>
 
-<h2>Pista: <%= @track.name %></h2>
-<p>Comprimento: <%= @track.distance %> km</p>
-<p>Número de curvas: <%= @track.number_of_curves %></p>
-<p>Distância total da corrida: <%= @strategy[:total_race_distance] %> km</p>
-<p>Quantidade de voltas da corrida: <%= @total_laps %> voltas</p>
-
-<h2>Recomendação</h2>
-<p>Voltas p/ tanque: <%= @strategy[:laps_per_tank].ceil %> litros</p>
-
-<div class="actions">
-  <%= link_to 'Voltar', new_race_path, class: 'button' %>
-</div>
+<%= link_to 'Voltar', races_path, class: 'btn btn-secondary' %>
