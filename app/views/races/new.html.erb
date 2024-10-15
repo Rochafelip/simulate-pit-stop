@@ -1,11 +1,11 @@
 <h1>Nova Corrida</h1>
 
 <%= form_with model: @race, local: true do |form| %>
-  <div>
+<div>
     <%= form.label :car_id, "Selecione o Carro" %>
     <%= form.collection_select :car_id, @cars, :id, :model, prompt: "Selecione um carro" %>
   </div>
-
+  
   <div>
     <%= form.label :track_id, "Selecione a Pista" %>
     <%= form.collection_select :track_id, @tracks, :id, :name, prompt: "Selecione uma pista" %>

@@ -2,13 +2,21 @@ class PitstopStrategiesController < ApplicationController
   def new
     @race = Race.new
     load_resources
-    render :new  # Exibe o formulário para calcular a estratégia de pitstop
+    render :new
   end
 
   def create
-    @race = Race.new(race_params)
+    @race = Race.new(pitstop_strategy_params)
+    puts "Parâmetros recebidos: #{params.inspect}"
 
-    if @race.valid?
+    # Validação para garantir que os parâmetros são maiores que zero
+    if pitstop_strategy_params.values.any? { |value| value.to_f <= 0 }
+      flash[:alert] = "Todos os parâmetros devem ser maiores que zero."
+      load_resources
+      render :new and return
+    end
+
+    if @race.save
       @strategy = PitstopStrategyService.new(
         car: @race.car,
         track: @race.track,
@@ -17,23 +25,21 @@ class PitstopStrategiesController < ApplicationController
         total_laps: @race.total_laps
       ).calculate
 
-      @race.total_fuel_needed = @strategy[:total_fuel_needed]  # Salva o total de combustível necessário
+      # Atribui o resultado da estratégia à corrida
+      @race.update(total_fuel_needed: @strategy[:total_fuel_needed])
 
-      if @race.save
-        redirect_to show_race_path(@race), notice: 'Estratégia de pitstop salva com sucesso.'
-      else
-        load_resources
-        render :new, alert: 'Erro ao salvar a estratégia de pitstop.'
-      end
+      flash[:notice] = "Estratégia de pitstop salva com sucesso."
+      redirect_to show_race_path(@race)
     else
+      flash[:alert] = "Erro ao salvar a corrida. Verifique os parâmetros."
       load_resources
-      render :new, alert: 'Erro nos parâmetros da corrida.'
+      render :new
     end
   end
 
   private
 
-  def race_params
+  def pitstop_strategy_params
     params.require(:race).permit(:car_id, :track_id, :average_lap_time, :fuel_consumption_per_lap, :total_laps)
   end
 
