@@ -12,12 +12,12 @@ class TracksController < ApplicationController
   def show
     render json: @track
   end
-  
+
   def new
     @track = Track.new
   end
 
-  #POST /track
+  # POST /track
   def create
     @track = Track.new(track_params)
     if @track.save

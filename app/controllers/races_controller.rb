@@ -6,6 +6,19 @@ class RacesController < ApplicationController
     render :overview  # Exibe a visão de listagem de corridas, carros e pistas
   end
 
+  def create
+    @race = Race.new(race_params)
+
+    @race.total_fuel_needed = @race.fuel_consumption_per_lap * @race.total_laps
+    if @race.save
+      # Calcular a estratégia de pitstop aqui, se necessário
+      redirect_to race_path(@race) # Passa o objeto @race com o id automaticamente
+    else
+      load_resources
+      render :new
+    end
+  end
+
   def new
     @race = Race.new
     load_resources
