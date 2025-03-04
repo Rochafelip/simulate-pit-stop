@@ -11,6 +11,9 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.1].define(version: 2024_10_15_173331) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "cars", force: :cascade do |t|
     t.string "model"
     t.integer "power"
@@ -22,8 +25,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_15_173331) do
   end
 
   create_table "races", force: :cascade do |t|
-    t.integer "track_id", null: false
-    t.integer "car_id", null: false
+    t.bigint "track_id", null: false
+    t.bigint "car_id", null: false
     t.float "average_lap_time"
     t.float "fuel_consumption_per_lap"
     t.integer "total_laps"
