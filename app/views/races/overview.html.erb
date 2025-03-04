@@ -1,9 +1,9 @@
-<h1>Corridas</h1>
+<h1>Visão Geral de Corridas</h1>
 
 <%= link_to 'Calcular Estratégia de Pitstop', new_race_path, class: 'btn btn-primary' %>
 <%= link_to 'Ver Todas as Corridas', strategies_races_path, class: 'btn btn-secondary' %>
 
-<h2>Carros</h2>
+<h2>Carros Disponíveis</h2>
 <ul>
   <% @cars.each do |car| %>
     <li>
@@ -16,7 +16,7 @@
   <% end %>
 </ul>
 
-<h2>Pistas</h2>
+<h2>Pistas Disponíveis</h2>
 <ul>
   <% @tracks.each do |track| %>
     <li>
@@ -28,5 +28,3 @@
     </li>
   <% end %>
 </ul>
-
-<%= link_to 'Voltar', races_path, class: 'btn btn-secondary' %>

@@ -1,8 +1,9 @@
 class RacesController < ApplicationController
-  before_action :set_race_params, only: [:create, :show, :calculate_strategy]
+  before_action :set_car_and_track, only: [:show]
 
   def index
     load_resources
+    render :overview  # Exibe a visão de listagem de corridas, carros e pistas
   end
 
   def create
@@ -19,72 +20,57 @@ class RacesController < ApplicationController
   end
 
   def new
-    @car = Car.new
-    @track = Track.new
+    @race = Race.new
     load_resources
   end
 
   def show
-    @strategy = calculate_pitstop_strategy
+    @strategy = PitstopStrategyService.new(
+      car: @car,
+      track: @track,
+      average_lap_time: @race.average_lap_time,
+      fuel_consumption_per_lap: @race.fuel_consumption_per_lap,
+      total_laps: @race.total_laps
+    ).calculate
+
+    render :show  # Exibe os detalhes da corrida e a estratégia calculada
   end
 
-  def calculate_strategy
-    @strategy = calculate_pitstop_strategy
-    # Criação de uma corrida e salvamento (opcional, dependendo do fluxo)
-    @race = Race.create(
-      car_id: params[:car_id],
-      track_id: params[:track_id],
-      fuel_consumption_per_lap: params[:fuel_consumption_per_lap],
-      total_laps: params[:total_laps],
-      average_lap_time: params[:average_lap_time] # Adicionando aqui
-    )
-    # Calcule o total de combustível necessário
-    @race.total_fuel_needed = @race.fuel_consumption_per_lap * @race.total_laps
+  def create
+    @race = Race.new(race_params)
+    
+    # Verifica se todos os parâmetros são maiores que zero
+    if race_params.values.any? { |value| value.to_f <= 0 }
+      flash[:alert] = "Todos os parâmetros devem ser maiores que zero."
+      load_resources
+      render :new and return
+    end
 
     if @race.save
-      redirect_to race_path(@race)
+      flash[:notice] = "Corrida salva com sucesso!"
+      redirect_to @race
     else
+      flash[:alert] = "Erro ao salvar a corrida."
       load_resources
       render :new
     end
   end
 
-  def strategies
-    @races = Race.includes(:car, :track).all
-  end
-
   private
 
+  def set_car_and_track
+    @race = Race.find(params[:id])
+    @car = @race.car
+    @track = @race.track
+  rescue ActiveRecord::RecordNotFound
+    flash[:alert] = "Carro ou pista não encontrado."
+    redirect_to races_path
+  end
+
   def race_params
-    params.permit(:car_id, :track_id, :fuel_consumption_per_lap, :total_laps, :average_lap_time)
+    params.require(:race).permit(:car_id, :track_id, :average_lap_time, :fuel_consumption_per_lap, :total_laps)
   end
 
-  # Carrega os parâmetros da corrida
-  def set_race_params
-    @fuel_consumption_per_lap = params[:fuel_consumption_per_lap].to_f
-    @total_laps = params[:total_laps].to_i
-    @average_lap_time = params[:average_lap_time].to_f
-
-    if @fuel_consumption_per_lap <= 0 || @total_laps <= 0 || @average_lap_time <= 0
-      render json: { error: "Consumo de combustível, total de voltas e tempo médio devem ser maiores que zero." },
-             status: :unprocessable_entity
-    end
-  end
-
-  # Usa o Service Object para calcular a estratégia
-  def calculate_pitstop_strategy
-    strategy_service = PitstopStrategyService.new(
-      car: @car,
-      track: @track,
-      average_lap_time: @average_lap_time, # Usando o parâmetro do método set_race_params
-      fuel_consumption_per_lap: @fuel_consumption_per_lap,
-      total_laps: @total_laps
-    )
-
-    strategy_service.calculate
-  end
-
-  # Carrega todos os carros e pistas
   def load_resources
     @cars = Car.all
     @tracks = Track.all

@@ -1,42 +1,32 @@
-<h1>Selecionar Carro e Pista</h1>
+<h1>Nova Corrida</h1>
 
-<%= form_with url: races_path, method: :post, local: true do |f| %>
-  <div class="field">
-    <%= f.label :car_id, "Selecione o Carro" %>
-    <%= f.collection_select :car_id, @cars, :id, :model %>
+<%= form_with model: @race, local: true do |form| %>
+<div>
+    <%= form.label :car_id, "Selecione o Carro" %>
+    <%= form.collection_select :car_id, @cars, :id, :model, prompt: "Selecione um carro" %>
   </div>
-  <div class="field">
-    <%= f.label :track_id, "Selecione a Pista" %>
-    <%= f.collection_select :track_id, @tracks, :id, :name %>
+  
+  <div>
+    <%= form.label :track_id, "Selecione a Pista" %>
+    <%= form.collection_select :track_id, @tracks, :id, :name, prompt: "Selecione uma pista" %>
   </div>
-  <div class="field">
-    <%= f.label :fuel_consumption_per_lap, "Consumo de Combustível por Volta (litros)" %>
-    <%= f.text_field :fuel_consumption_per_lap, required: true %>
+
+  <div>
+    <%= form.label :average_lap_time, "Tempo Médio por Volta (segundos)" %>
+    <%= form.number_field :average_lap_time, step: 0.01 %>
   </div>
-  <div class="field">
-    <%= f.label :total_laps, "Quantidade de Voltas da Corrida" %>
-    <%= f.number_field :total_laps, required: true %>
+
+  <div>
+    <%= form.label :fuel_consumption_per_lap, "Consumo de Combustível por Volta (litros)" %>
+    <%= form.number_field :fuel_consumption_per_lap, step: 0.01 %>
   </div>
-  <div class="field">
-    <%= f.label :average_lap_time, "Tempo Médio por Volta (segundos)" %>
-    <%= f.number_field :average_lap_time, required: true, step: 'any' %>
+
+  <div>
+    <%= form.label :total_laps, "Número Total de Voltas" %>
+    <%= form.number_field :total_laps %>
   </div>
-  <div class="actions">
-    <%= f.submit "Calcular Estratégia" %>
-  </div>
+
+  <%= form.submit "Salvar Corrida", class: "btn btn-primary" %>
 <% end %>
 
-<div class="actions">
-  <%= link_to 'Voltar', races_path, class: 'button' %>
-</div>
-
-<script>
-  function updateFormAction() {
-    const carId = document.querySelector('#car_id').value;
-    const trackId = document.querySelector('#track_id').value;
-    const form = document.querySelector('form');
-    if (carId && trackId) {
-      form.action = `<%= show_race_path(car_id: '', track_id: '') %>`.replace('{car_id}', carId).replace('{track_id}', trackId);
-    }
-  }
-</script>
+<%= link_to 'Voltar', races_path, class: 'btn btn-secondary' %>
