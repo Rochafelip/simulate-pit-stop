@@ -3,25 +3,35 @@ class RacesController < ApplicationController
 
   def index
     load_resources
-    render :overview  # Exibe a visão de listagem de corridas, carros e pistas
+    render :overview
   end
 
-  def create
-    @race = Race.new(race_params)
-
-    @race.total_fuel_needed = @race.fuel_consumption_per_lap * @race.total_laps
-    if @race.save
-      # Calcular a estratégia de pitstop aqui, se necessário
-      redirect_to race_path(@race) # Passa o objeto @race com o id automaticamente
-    else
-      load_resources
-      render :new
-    end
+  def strategies
+    @races = Race.all  # Ou uma query mais específica
   end
 
   def new
     @race = Race.new
     load_resources
+  end
+
+  def create
+    @race = Race.new(race_params)
+
+    if race_params.values.any? { |value| value.to_f <= 0 }
+      flash[:alert] = "Todos os parâmetros devem ser maiores que zero."
+      load_resources
+      render :new and return
+    end
+
+    @race.total_fuel_needed = @race.fuel_consumption_per_lap * @race.total_laps
+
+    if @race.save
+      redirect_to race_path(@race), notice: "Corrida salva com sucesso!"
+    else
+      load_resources
+      render :new
+    end
   end
 
   def show
@@ -32,28 +42,6 @@ class RacesController < ApplicationController
       fuel_consumption_per_lap: @race.fuel_consumption_per_lap,
       total_laps: @race.total_laps
     ).calculate
-
-    render :show  # Exibe os detalhes da corrida e a estratégia calculada
-  end
-
-  def create
-    @race = Race.new(race_params)
-    
-    # Verifica se todos os parâmetros são maiores que zero
-    if race_params.values.any? { |value| value.to_f <= 0 }
-      flash[:alert] = "Todos os parâmetros devem ser maiores que zero."
-      load_resources
-      render :new and return
-    end
-
-    if @race.save
-      flash[:notice] = "Corrida salva com sucesso!"
-      redirect_to @race
-    else
-      flash[:alert] = "Erro ao salvar a corrida."
-      load_resources
-      render :new
-    end
   end
 
   private

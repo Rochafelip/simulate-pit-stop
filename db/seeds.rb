@@ -19,7 +19,6 @@ Track.create!([
 car = Car.first # Supondo que você já tenha um carro no banco de dados
 track = Track.first # E uma pista no banco de dados
 
-# Adicione uma corrida com total_fuel_needed calculado corretamente
 Race.create!(
   track: track,
   car: car,
