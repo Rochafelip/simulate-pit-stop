@@ -1,23 +1,14 @@
 Rails.application.routes.draw do
-  resources :cars, except: [:edit, :update] # Inclui todas as ações, exceto edit e update
-  resources :tracks, except: [:edit, :update] # Inclui todas as ações, exceto edit e update
+  # Rotas do Devise Token Auth
+  mount_devise_token_auth_for 'User', at: 'api/v1/auth'
 
-  resources :races, except: [:edit, :update] do
-    member do
-      post 'calculate_strategy'  # Para calcular a estratégia de pitstop para uma corrida específica
-    end
-
-    collection do
-      get 'add_cars_tracks'
-      post 'create_cars_tracks'
-      get 'strategies' 
+  # Outras rotas da API
+  namespace :api do
+    namespace :v1 do
+      resources :cars, only: [:create, :index, :show, :update, :destroy]
+      resources :tracks, only: [:create, :index, :show, :update, :destroy]
+      resources :races, only: [:create, :index, :show, :update, :destroy]
+      resources :users, only: [:create, :index, :show, :update, :destroy]
     end
   end
-
-  get 'races/show/:car_id/:track_id', to: 'races#show', as: 'show_race'
-
-  # Rotas para estratégias de pitstop
-  resources :pitstop_strategies, only: [:new, :create]
-
-  root 'races#index'  # Define a rota raiz para a lista de corridas
 end
