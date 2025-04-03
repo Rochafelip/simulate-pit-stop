@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_15_173331) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_02_233159) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,35 +18,66 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_15_173331) do
     t.string "model"
     t.integer "power"
     t.integer "weight"
-    t.float "fuel_capacity"
+    t.integer "fuel_capacity"
+    t.string "category"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "category"
   end
 
   create_table "races", force: :cascade do |t|
-    t.bigint "track_id", null: false
     t.bigint "car_id", null: false
-    t.float "average_lap_time"
-    t.float "fuel_consumption_per_lap"
+    t.bigint "track_id", null: false
     t.integer "total_laps"
+    t.float "fuel_consumption_per_lap"
+    t.float "average_lap_time"
+    t.float "total_fuel_needed"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.float "total_fuel_needed"
     t.index ["car_id"], name: "index_races_on_car_id"
     t.index ["track_id"], name: "index_races_on_track_id"
   end
 
   create_table "tracks", force: :cascade do |t|
     t.string "name"
-    t.float "distance"
+    t.integer "distance"
     t.integer "number_of_curves"
     t.string "country"
-    t.float "elevation_track"
+    t.integer "elevation_track"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  create_table "users", force: :cascade do |t|
+    t.bigint "car_id"
+    t.bigint "track_id"
+    t.integer "total_laps"
+    t.float "fuel_consumption_per_lap"
+    t.float "average_lap_time"
+    t.float "total_fuel_needed"
+    t.string "name", null: false
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "role", default: 0
+    t.boolean "admin", default: false
+    t.string "provider", default: "email", null: false
+    t.string "uid", default: "", null: false
+    t.index ["car_id"], name: "index_users_on_car_id"
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["track_id"], name: "index_users_on_track_id"
+  end
+
   add_foreign_key "races", "cars"
   add_foreign_key "races", "tracks"
+  add_foreign_key "users", "cars"
+  add_foreign_key "users", "tracks"
 end

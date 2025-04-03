@@ -15,15 +15,3 @@ Track.create!([
   {name: "Mount Panorama Circuit - Bathurst", distance: 6.213, number_of_curves: 23, country: "Australia", elevation_track: 174},
   {name: "Circuito de Mônaco", distance: 3.337, number_of_curves: 19, country: "Monaco", elevation_track: 42}
 ])
-
-car = Car.first # Supondo que você já tenha um carro no banco de dados
-track = Track.first # E uma pista no banco de dados
-
-Race.create!(
-  track: track,
-  car: car,
-  average_lap_time: 30.5,
-  fuel_consumption_per_lap: 1.5,
-  total_laps: 10,
-  total_fuel_needed: (1.5 * 10) # Exemplo de cálculo
-)

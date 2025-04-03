@@ -4,7 +4,8 @@ class CreateCars < ActiveRecord::Migration[7.1]
       t.string :model
       t.integer :power
       t.integer :weight
-      t.float :fuel_capacity
+      t.integer :fuel_capacity
+      t.string :category
 
       t.timestamps
     end
